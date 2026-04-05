@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titre %}{{ titre_page }}{% endblock %}
+
+{% block contenu %}
+
+<div class="page-formulaire">
+
+  <!-- Lien retour -->
+  <p style="margin-bottom: 1.5rem;">
+    <a href="{% url 'blog:article-list' %}" class="btn btn-secondaire">
+      ← Retour
+    </a>
+  </p>
+
+  <!-- Titre de la page -->
+  <h1 class="form-titre">{{ titre_page }}</h1>
+  <p class="form-sous-titre">
+    {% if est_modification %}
+      Modifiez les informations de cet article ci-dessous.
+    {% else %}
+      Remplissez les informations pour créer un nouvel article.
+    {% endif %}
+  </p>
+
+  <!-- ================================
+       FORMULAIRE
+       method="post"      : envoie les données au serveur
+       enctype="..."      : OBLIGATOIRE pour uploader des images
+       {% csrf_token %}   : protection sécurité anti-piratage
+  ================================= -->
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="form-card">
+
+      <!-- Erreurs globales du formulaire -->
+      {% if form.non_field_errors %}
+        <div class="flash flash-error" style="margin-bottom:1.5rem;">
+          {{ form.non_field_errors }}
+        </div>
+      {% endif %}
+
+      <!-- --- TITRE --- -->
+      <div class="form-groupe">
+        <label class="form-label" for="{{ form.titre.id_for_label }}">
+          Titre *
+        </label>
+        <input
+          type="text"
+          id="{{ form.titre.id_for_label }}"
+          name="{{ form.titre.html_name }}"
+          value="{{ form.titre.value|default:'' }}"
+          class="form-control"
+          placeholder="Entrez le titre de l'article..."
+          required
+        >
+        {% if form.titre.errors %}
+          <p class="form-erreur">{{ form.titre.errors|join:", " }}</p>
+        {% endif %}
+      </div>
+
+      <!-- --- AUTEUR --- -->
+      <div class="form-groupe">
+        <label class="form-label" for="{{ form.auteur.id_for_label }}">
+          Auteur *
+        </label>
+        <input
+          type="text"
+          id="{{ form.auteur.id_for_label }}"
+          name="{{ form.auteur.html_name }}"
+          value="{{ form.auteur.value|default:'' }}"
+          class="form-control"
+          placeholder="Nom de l'auteur..."
+          required
+        >
+        {% if form.auteur.errors %}
+          <p class="form-erreur">{{ form.auteur.errors|join:", " }}</p>
+        {% endif %}
+      </div>
+
+      <!-- --- RÉSUMÉ --- -->
+      <div class="form-groupe">
+        <label class="form-label" for="{{ form.resume.id_for_label }}">
+          Résumé <span style="color:var(--gris-clair); font-weight:300;">(optionnel)</span>
+        </label>
+        <textarea
+          id="{{ form.resume.id_for_label }}"
+          name="{{ form.resume.html_name }}"
+          class="form-control"
+          rows="3"
+          style="min-height:80px;"
+          placeholder="Courte description affichée dans la liste..."
+        >{{ form.resume.value|default:'' }}</textarea>
+        <p class="form-aide">
+          Affiché sous le titre dans la liste des articles.
+        </p>
+      </div>
+
+      <!-- --- CONTENU --- -->
+      <div class="form-groupe">
+        <label class="form-label" for="{{ form.contenu.id_for_label }}">
+          Contenu *
+        </label>
+        <textarea
+          id="{{ form.contenu.id_for_label }}"
+          name="{{ form.contenu.html_name }}"
+          class="form-control"
+          placeholder="Écrivez votre article ici..."
+          required
+        >{{ form.contenu.value|default:'' }}</textarea>
+        {% if form.contenu.errors %}
+          <p class="form-erreur">{{ form.contenu.errors|join:", " }}</p>
+        {% endif %}
+      </div>
+
+      <!-- --- IMAGE --- -->
+      <div class="form-groupe">
+        <label class="form-label" for="{{ form.image.id_for_label }}">
+          Image <span style="color:var(--gris-clair); font-weight:300;">(optionnel)</span>
+        </label>
+
+        <!-- Affiche l'image actuelle si on est en modification -->
+        {% if form.instance.image %}
+          <div style="margin-bottom:1rem;">
+            <p style="color:var(--gris-clair); font-size:0.8rem; margin-bottom:0.5rem;">
+              Image actuelle :
+            </p>
+            <img
+              src="{{ form.instance.image.url }}"
+              alt="Image actuelle"
+              style="max-height:120px; border-radius:4px; border:1px solid var(--gris-moyen);"
+            >
+          </div>
+        {% endif %}
+
+        <input
+          type="file"
+          id="{{ form.image.id_for_label }}"
+          name="{{ form.image.html_name }}"
+          class="form-control"
+          accept="image/*"
+          style="padding:0.6rem;"
+        >
+        <p class="form-aide">Formats acceptés : JPG, PNG, GIF, WebP</p>
+      </div>
+
+      <!-- --- STATUT ET DATE côte à côte --- -->
+      <div class="form-ligne">
+
+        <!-- Statut -->
+        <div class="form-groupe">
+          <label class="form-label" for="{{ form.statut.id_for_label }}">
+            Statut
+          </label>
+          <select
+            id="{{ form.statut.id_for_label }}"
+            name="{{ form.statut.html_name }}"
+            class="form-control"
+            style="cursor:pointer;"
+          >
+            {% for valeur, libelle in form.fields.statut.choices %}
+              <option value="{{ valeur }}"
+                {% if form.statut.value == valeur %}selected{% endif %}>
+                {{ libelle }}
+              </option>
+            {% endfor %}
+          </select>
+          <p class="form-aide">Brouillon = non visible par les visiteurs</p>
+        </div>
+
+        <!-- Date de publication -->
+        <div class="form-groupe">
+          <label class="form-label" for="{{ form.date_publication.id_for_label }}">
+            Date de publication
+          </label>
+          {{ form.date_publication }}
+          {% if form.date_publication.errors %}
+            <p class="form-erreur">{{ form.date_publication.errors|join:", " }}</p>
+          {% endif %}
+        </div>
+
+      </div>
+
+      <!-- --- BOUTONS --- -->
+      <div style="display:flex; gap:1rem; margin-top:1rem; padding-top:1.5rem; border-top:1px solid var(--gris-moyen);">
+        <button type="submit" class="btn btn-primaire btn-grand">
+          {% if est_modification %}💾{% else %}✦{% endif %}
+          {{ bouton_texte }}
+        </button>
+        <a href="{% url 'blog:article-list' %}" class="btn btn-secondaire btn-grand">
+          Annuler
+        </a>
+      </div>
+
+    </div>
+
+  </form>
+
+</div>
+
+{% endblock %}

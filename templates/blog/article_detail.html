@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titre %}{{ article.titre }}{% endblock %}
+
+{% block contenu %}
+
+  <div class="article-detail">
+
+    <!-- Lien retour -->
+    <p style="margin-bottom: 2rem;">
+      <a href="{% url 'blog:article-list' %}" class="btn btn-secondaire">
+        ← Retour aux articles
+      </a>
+    </p>
+
+    <!-- ================================
+         EN-TÊTE DE L'ARTICLE
+    ================================= -->
+    <header class="article-entete">
+
+      <!-- Badge statut visible uniquement par l'admin -->
+      {% if user.is_staff %}
+        <span class="badge badge-{{ article.statut }}">
+          {% if article.statut == 'publie' %}
+            ✅ Publié
+          {% else %}
+            📝 Brouillon
+          {% endif %}
+        </span>
+      {% endif %}
+
+      <!-- Titre principal -->
+      <h1 class="article-titre-detail">
+        {{ article.titre }}
+      </h1>
+
+      <!-- Métadonnées : auteur et date -->
+      <div class="article-meta-detail">
+        <span>✦ Par <strong>{{ article.auteur }}</strong></span>
+        <span>{{ article.date_publication|date:"d F Y" }}</span>
+        <!-- Heure de publication -->
+        <span>{{ article.date_publication|date:"H\hi" }}</span>
+      </div>
+
+    </header>
+
+    <!-- ================================
+         IMAGE ILLUSTRATIVE
+    ================================= -->
+    {% if article.image %}
+      <img
+        src="{{ article.image.url }}"
+        alt="{{ article.titre }}"
+        class="article-image-hero"
+      >
+    {% endif %}
+
+    <!-- ================================
+         RÉSUMÉ (si présent)
+    ================================= -->
+    {% if article.resume %}
+      <p class="article-resume">
+        {{ article.resume }}
+      </p>
+    {% endif %}
+
+    <!-- ================================
+         CONTENU DE L'ARTICLE
+         linebreaksbr convertit les sauts de ligne en <br>
+    ================================= -->
+    <div class="article-contenu">
+      {{ article.contenu|linebreaksbr }}
+    </div>
+
+    <!-- ================================
+         BOUTONS D'ACTION (admin uniquement)
+    ================================= -->
+    {% if user.is_staff %}
+      <div class="article-actions">
+        <a href="{% url 'blog:article-update' article.pk %}"
+           class="btn btn-primaire">
+          ✏️ Modifier cet article
+        </a>
+        <a href="{% url 'blog:article-delete' article.pk %}"
+           class="btn btn-danger">
+          🗑️ Supprimer
+        </a>
+      </div>
+    {% endif %}
+
+  </div>
+
+{% endblock %}

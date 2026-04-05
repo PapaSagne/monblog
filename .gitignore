@@ -1,0 +1,28 @@
+# Environnement virtuel (ne jamais pousser sur GitHub)
+venv/
+
+# Base de données locale
+db.sqlite3
+
+# Fichiers médias uploadés par les utilisateurs
+media/
+
+# Fichiers Python compilés
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Fichiers d'IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Fichiers sensibles
+.env
+local_settings.py
