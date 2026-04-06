@@ -29,13 +29,11 @@
 
     {% if articles %}
 
-      <!-- Grille des cartes articles -->
       <div class="articles-grille">
 
         {% for article in articles %}
           <article class="carte-article">
 
-            <!-- Image ou placeholder -->
             <div class="carte-image">
               {% if article.image %}
                 <img
@@ -53,20 +51,17 @@
             <!-- Corps de la carte -->
             <div class="carte-corps">
 
-              <!-- Auteur et date -->
               <div class="carte-meta">
                 <span class="carte-meta-auteur">{{ article.auteur }}</span>
                 <span>{{ article.date_publication|date:"d M Y" }}</span>
               </div>
 
-              <!-- Titre avec lien -->
               <h2 class="carte-titre">
                 <a href="{{ article.get_absolute_url }}">
                   {{ article.titre }}
                 </a>
               </h2>
 
-              <!-- Résumé ou début du contenu -->
               <p class="carte-resume">
                 {% if article.resume %}
                   {{ article.resume|truncatewords:20 }}
@@ -84,18 +79,17 @@
                 Lire l'article →
               </a>
 
-              <!-- Boutons modifier/supprimer visibles uniquement pour l'admin -->
               {% if user.is_staff %}
                 <div style="display:flex; gap:0.5rem;">
                   <a href="{% url 'blog:article-update' article.pk %}"
                      class="btn btn-secondaire"
                      style="padding:0.3rem 0.7rem; font-size:0.75rem;">
-                    ✏️
+                    
                   </a>
                   <a href="{% url 'blog:article-delete' article.pk %}"
                      class="btn btn-danger"
                      style="padding:0.3rem 0.7rem; font-size:0.75rem;">
-                    🗑️
+                    
                   </a>
                 </div>
               {% endif %}
@@ -132,13 +126,13 @@
 
       <!-- Message quand il n'y a aucun article publié -->
       <div class="etat-vide">
-        <div class="etat-vide-icone">📝</div>
+        <div class="etat-vide-icone"></div>
         <p class="etat-vide-titre">Aucun article pour l'instant</p>
         <p>Revenez bientôt ou connectez-vous pour créer le premier article.</p>
         {% if user.is_staff %}
           <br>
           <a href="{% url 'blog:article-create' %}" class="btn btn-primaire btn-grand">
-            ✦ Créer le premier article
+             Créer le premier article
           </a>
         {% endif %}
       </div>

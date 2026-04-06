@@ -5,33 +5,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Le titre change selon la page grâce au bloc 'titre' -->
   <title>{% block titre %}MonBlog{% endblock %} — MonBlog</title>
 
-  <!-- Notre feuille de styles CSS -->
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
 </head>
 <body>
 
-  <!-- ================================
-       EN-TÊTE / NAVIGATION
-  ================================= -->
+ 
   <header class="site-header">
     <div class="header-inner">
 
-      <!-- Logo cliquable qui renvoie à l'accueil -->
       <a href="{% url 'blog:article-list' %}" class="site-logo">
         Mon<span>Blog</span>
       </a>
 
-      <!-- Menu de navigation -->
       <nav>
         <ul class="site-nav">
 
           <li><a href="{% url 'blog:article-list' %}">Accueil</a></li>
 
-          <!-- Ces liens sont visibles uniquement si l'admin est connecté -->
           {% if user.is_authenticated %}
             <li>
               <a href="{% url 'blog:article-create' %}" class="btn-nav">
@@ -54,18 +47,12 @@
     </div>
   </header>
 
-  <!-- ================================
-       CONTENU PRINCIPAL
-       Chaque template enfant remplace ce bloc
-  ================================= -->
+  
   <main>
     {% block contenu %}{% endblock %}
   </main>
 
-  <!-- ================================
-       MESSAGES FLASH
-       Affichés en bas à droite après une action
-  ================================= -->
+  
   {% if messages %}
     <div class="messages-flash">
       {% for message in messages %}
@@ -76,7 +63,6 @@
     </div>
 
     <script>
-      // Les messages disparaissent automatiquement après 4 secondes
       setTimeout(function() {
         var flashes = document.querySelectorAll('.flash');
         flashes.forEach(function(flash) {
@@ -94,7 +80,7 @@
   <footer class="site-footer">
     <p>
       &copy; {% now "Y" %} MonBlog &mdash;
-      Fait avec ❤️ et Django &nbsp;|&nbsp;
+      Fait Django &nbsp;|&nbsp;
       <a href="/admin/">Administration</a>
     </p>
   </footer>

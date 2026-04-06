@@ -6,7 +6,7 @@
 
   <div class="page-suppression">
 
-    <!-- Icône -->
+    
     <div class="suppression-icone">🗑️</div>
 
     <!-- Titre -->
@@ -14,7 +14,6 @@
       Confirmer la suppression
     </h1>
 
-    <!-- Message de confirmation -->
     <p class="suppression-message">
       Êtes-vous sûr de vouloir supprimer définitivement l'article
       <br>
@@ -27,19 +26,16 @@
 
     <!-- ================================
          FORMULAIRE DE CONFIRMATION
-         Une simple soumission POST suffit
     ================================= -->
     <form method="post">
       {% csrf_token %}
 
       <div class="suppression-boutons">
 
-        <!-- Bouton confirmer la suppression -->
         <button type="submit" class="btn btn-danger btn-grand">
           Oui, supprimer définitivement
         </button>
 
-        <!-- Bouton annuler -->
         <a href="{{ article.get_absolute_url }}"
            class="btn btn-secondaire btn-grand">
           Non, annuler

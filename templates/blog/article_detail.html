@@ -25,7 +25,7 @@
           {% if article.statut == 'publie' %}
             ✅ Publié
           {% else %}
-            📝 Brouillon
+             Brouillon
           {% endif %}
         </span>
       {% endif %}
@@ -35,7 +35,6 @@
         {{ article.titre }}
       </h1>
 
-      <!-- Métadonnées : auteur et date -->
       <div class="article-meta-detail">
         <span>✦ Par <strong>{{ article.auteur }}</strong></span>
         <span>{{ article.date_publication|date:"d F Y" }}</span>
@@ -57,7 +56,7 @@
     {% endif %}
 
     <!-- ================================
-         RÉSUMÉ (si présent)
+         RÉSUMÉ 
     ================================= -->
     {% if article.resume %}
       <p class="article-resume">
@@ -67,24 +66,23 @@
 
     <!-- ================================
          CONTENU DE L'ARTICLE
-         linebreaksbr convertit les sauts de ligne en <br>
     ================================= -->
     <div class="article-contenu">
       {{ article.contenu|linebreaksbr }}
     </div>
 
     <!-- ================================
-         BOUTONS D'ACTION (admin uniquement)
+         BOUTONS D'ACTION
     ================================= -->
     {% if user.is_staff %}
       <div class="article-actions">
         <a href="{% url 'blog:article-update' article.pk %}"
            class="btn btn-primaire">
-          ✏️ Modifier cet article
+           Modifier cet article
         </a>
         <a href="{% url 'blog:article-delete' article.pk %}"
            class="btn btn-danger">
-          🗑️ Supprimer
+           Supprimer
         </a>
       </div>
     {% endif %}

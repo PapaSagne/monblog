@@ -24,18 +24,12 @@
     {% endif %}
   </p>
 
-  <!-- ================================
-       FORMULAIRE
-       method="post"      : envoie les données au serveur
-       enctype="..."      : OBLIGATOIRE pour uploader des images
-       {% csrf_token %}   : protection sécurité anti-piratage
-  ================================= -->
+  
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
 
     <div class="form-card">
 
-      <!-- Erreurs globales du formulaire -->
       {% if form.non_field_errors %}
         <div class="flash flash-error" style="margin-bottom:1.5rem;">
           {{ form.non_field_errors }}
@@ -186,7 +180,7 @@
       <!-- --- BOUTONS --- -->
       <div style="display:flex; gap:1rem; margin-top:1rem; padding-top:1.5rem; border-top:1px solid var(--gris-moyen);">
         <button type="submit" class="btn btn-primaire btn-grand">
-          {% if est_modification %}💾{% else %}✦{% endif %}
+          {% if est_modification %} {% else %}✦{% endif %}
           {{ bouton_texte }}
         </button>
         <a href="{% url 'blog:article-list' %}" class="btn btn-secondaire btn-grand">

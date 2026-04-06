@@ -1,7 +1,4 @@
-"""
-Configuration de l'interface d'administration Django.
-Ce fichier contrôle comment les articles apparaissent dans /admin/
-"""
+
 
 from django.contrib import admin
 from .models import Article
@@ -9,10 +6,7 @@ from .models import Article
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
-    """
-    Personnalisation de l'affichage du modèle Article dans l'admin.
-    Le décorateur @admin.register() enregistre le modèle automatiquement.
-    """
+    
 
     # Colonnes affichées dans la liste des articles
     list_display = ('titre', 'auteur', 'statut', 'date_publication')
@@ -35,17 +29,17 @@ class ArticleAdmin(admin.ModelAdmin):
     # Nombre d'articles par page dans l'admin
     list_per_page = 20
 
-    # Champs remplis automatiquement (non modifiables)
+    # Champs remplis automatiquement
     readonly_fields = ('date_creation', 'date_modification')
 
-    # Organisation des champs en sections dans le formulaire
+    # Organisation des champs en sections
     fieldsets = (
         ('Contenu', {
             'fields': ('titre', 'auteur', 'resume', 'contenu')
         }),
         ('Image', {
             'fields': ('image',),
-            'classes': ('collapse',),  # Section rétractable
+            'classes': ('collapse',),  
         }),
         ('Publication', {
             'fields': ('statut', 'date_publication')
